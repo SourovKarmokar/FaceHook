@@ -1,0 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap");
+
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-inter: "Inter", sans-serif;
+
+  --color-lwsGreen: #00D991;
+  --color-deepDark: #17181C;
+  --color-mediumDark: #1E1F24;
+  --color-lighterDark: #27292F;
+}
+
+@layer base {
+  body {
+    @apply bg-deepDark font-inter text-gray-100;
+  }
+}
