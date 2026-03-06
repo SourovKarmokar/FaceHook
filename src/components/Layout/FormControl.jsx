@@ -1,4 +1,4 @@
-const FormControl = ({children , className}) => {
+const FormControl = ({children , className= ""}) => {
   return (
     <div className={`mb-6 space-y-2.5 ${className}`}>
       {children}

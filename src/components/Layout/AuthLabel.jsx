@@ -1,6 +1,6 @@
 import React from 'react'
 
-const AuthLabel = ({children , className}) => {
+const AuthLabel = ({children , className= ""}) => {
   return (
     <div className={`leading-[138%] lg:text-lg ${className}`}>
       {children}
