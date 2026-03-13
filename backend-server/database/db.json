@@ -530,6 +530,14 @@
       "lastName": "Adhikary",
       "avatar": null,
       "email": "sourov@email.com"
+    },
+    {
+      "id": "b79dc0c2-b9c4-471c-98f6-58ae4d2e1d41",
+      "password": "$2b$08$9Dj3pysvHtBFdGJiJoZUCeqXi1yOe5sE3pMIdCnhbLotHZ2DZXPGe",
+      "firstName": "Tapas",
+      "lastName": "Adhikary",
+      "avatar": null,
+      "email": "sourovkarmokar@email.com"
     }
   ]
 }
