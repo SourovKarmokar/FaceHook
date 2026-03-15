@@ -1,29 +1,29 @@
-import Container from "../components/Layout/Container"
-import { useAuth } from "../hooks/useAuth"
-import { Outlet ,Navigate } from "react-router-dom"
-import Header from '../components/common/Header'
+import { Navigate, Outlet } from "react-router-dom";
+import Header from "../components/common/Header";
+import Container from "../components/Layout/Container";
+import { useAuth } from "../hooks/useAuth";
+import ProfileProvider from "../providers/ProfileProvider";
 
 const PrivateRoutes = () => {
-    const {auth} = useAuth()
+  const { auth } = useAuth();
   return (
     <>
-     {
-        auth.user ? (
-            <>
-             <Header/>
+      {auth.authToken ? (
+        <>
+          <ProfileProvider>
+            <Header />
             <main className="mx-auto max-w-[1020px] py-8">
-            <Container>
-               
-                <Outlet/>
-            </Container>
+              <Container>
+                <Outlet />
+              </Container>
             </main>
-            </>
-        ) : (
-            <Navigate to="/login" />
-        )
-     } 
+          </ProfileProvider>
+        </>
+      ) : (
+        <Navigate to="/login" />
+      )}
     </>
-  )
-}
+  );
+};
 
-export default PrivateRoutes
+export default PrivateRoutes;
