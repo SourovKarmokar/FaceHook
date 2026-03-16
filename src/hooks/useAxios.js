@@ -1,15 +1,20 @@
-import { useEffect } from "react";
+import axios from "axios";
+import { useEffect, useRef } from "react";
 import { api } from "../api";
 import { useAuth } from "./useAuth";
-import axios from "axios";
 
 const useAxios = () => {
   const { auth, setAuth } = useAuth();
+  const authRef = useRef(auth);
+
+  useEffect(() => {
+    authRef.current = auth;
+  }, [auth]);
 
   useEffect(() => {
     const requestInterceptor = api.interceptors.request.use(
       (config) => {
-        const authToken = auth?.authToken;
+        const authToken = authRef.current?.authToken;
         if (authToken) {
           config.headers.Authorization = `Bearer ${authToken}`;
         }
@@ -22,21 +27,25 @@ const useAxios = () => {
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
-        if (error.response.status === 401 && !originalRequest._retry) {
+        if (error.response?.status === 401 && !originalRequest._retry) {
           originalRequest._retry = true;
 
-          const refreshToken = auth?.refreshToken;
-          const response = await axios.post(
-            `${import.meta.env.VITE_SERVER_BASE_URL}/auth/refresh-token`,
-            { refreshToken },
-          );
-          const { token } = response.data;
+          try {
+            const refreshToken = authRef.current?.refreshToken;
+            const response = await axios.post(
+              `${import.meta.env.VITE_SERVER_BASE_URL}/auth/refresh-token`,
+              { refreshToken },
+            );
+            const { token } = response.data;
 
-          setAuth({ ...auth, authToken: token });
-
-          originalRequest.headers.Authorization = `Bearer ${token}`;
-
-          return api(originalRequest);
+            setAuth({ ...authRef.current, authToken: token });
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+            return api(originalRequest);
+          } catch (err) {
+            // ✅ refresh token fail হলে logout করো
+            setAuth({});
+            return Promise.reject(err);
+          }
         }
         return Promise.reject(error);
       },
@@ -46,8 +55,7 @@ const useAxios = () => {
       api.interceptors.request.eject(requestInterceptor);
       api.interceptors.response.eject(responseInterceptor);
     };
-
-  }, [auth.authToken]); 
+  }, []);
 
   return { api };
 };

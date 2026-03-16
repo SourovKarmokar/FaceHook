@@ -57,6 +57,7 @@ const LoginForm = () => {
           type="email"
           name="email"
           id="email"
+          autoComplete="email"
         />
       </Field>
 
@@ -72,6 +73,8 @@ const LoginForm = () => {
           className={`w-full rounded-md border border-[#CCCCCC]/[14%] bg-lighterDark p-1.5 focus:outline-none lg:p-3 ${errors.password ? "border-red-500" : "border-gray-200"}`}
           type="password"
           id="password"
+          name="password"
+           autoComplete="current-password"
         />
       </Field>
       <p>{errors?.root?.message}</p>

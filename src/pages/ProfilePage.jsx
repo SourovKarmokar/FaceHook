@@ -4,6 +4,9 @@ import { useEffect} from 'react'
 import {useProfile} from '../hooks/useProfile'
 import { actions } from '../actions'
 
+import ProfileInfo from '../components/profile/ProfileInfo'
+import MyPosts from '../components/profile/MyPosts'
+
 const ProfilePage = () => {
   const { state, dispatch } = useProfile()
   const { api } = useAxios();
@@ -31,10 +34,10 @@ const ProfilePage = () => {
   if (state?.error) return <div>Something went wrong!</div>
 
   return (
-    <div>
-      Welcome, {state?.user?.firstName} {state?.user?.lastName} 
-      <p>You have {state?.posts.length}</p>
-    </div>
+   <>
+      <ProfileInfo/>
+      <MyPosts/>
+   </>
   )
 }
 
