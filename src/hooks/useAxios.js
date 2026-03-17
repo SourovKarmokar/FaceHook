@@ -30,22 +30,16 @@ const useAxios = () => {
         if (error.response?.status === 401 && !originalRequest._retry) {
           originalRequest._retry = true;
 
-          try {
-            const refreshToken = authRef.current?.refreshToken;
-            const response = await axios.post(
-              `${import.meta.env.VITE_SERVER_BASE_URL}/auth/refresh-token`,
-              { refreshToken },
-            );
-            const { token } = response.data;
+          const refreshToken = authRef.current?.refreshToken;
+          const response = await axios.post(
+            `${import.meta.env.VITE_SERVER_BASE_URL}/auth/refresh-token`,
+            { refreshToken },
+          );
+          const { token } = response.data;
 
-            setAuth({ ...authRef.current, authToken: token });
-            originalRequest.headers.Authorization = `Bearer ${token}`;
-            return api(originalRequest);
-          } catch (err) {
-            // ✅ refresh token fail হলে logout করো
-            setAuth({});
-            return Promise.reject(err);
-          }
+          setAuth({ ...authRef.current, authToken: token });
+          originalRequest.headers.Authorization = `Bearer ${token}`;
+          return api(originalRequest);
         }
         return Promise.reject(error);
       },
@@ -55,7 +49,7 @@ const useAxios = () => {
       api.interceptors.request.eject(requestInterceptor);
       api.interceptors.response.eject(responseInterceptor);
     };
-  }, []);
+  }, []); // ✅ খালি
 
   return { api };
 };
